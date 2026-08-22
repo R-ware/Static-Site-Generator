@@ -136,4 +136,16 @@ def markdown_to_html_node(markdown):
             children = text_to_children(paragraph_text)
             html_nodes.append(ParentNode("p", children))
         if block_type == BlockType.heading:
-            return ParentNode("div", html_nodes)
+            header_parts = block.split(" ", 1)
+            header_level = f"h{len(header_parts[0])}"
+            children = text_to_children(header_parts[1])
+            html_nodes.append(ParentNode(header_level, children))
+        if block_type == BlockType.quote:
+            quote_lines = block.split("\n")
+            stripped_quote_lines = [quote_line[1:].strip() for quote_line in quote_lines]
+            quote_text = " ".join(stripped_quote_lines)
+            children = text_to_children(quote_text)
+            html_nodes.append(ParentNode("blockquote", children))                
+
+
+    return ParentNode("div", html_nodes)

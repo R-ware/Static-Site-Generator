@@ -381,11 +381,6 @@ This is the same paragraph on a new line
         self.assertEqual(block_to_block_type(""), BlockType.paragraph)
         self.assertEqual(block_to_block_type("# Heading"), BlockType.heading)
 
-    def test_text_to_children(self):
-        children = text_to_children("This is *bold* and _italic_ and `code`")
-        for child in children:
-            print(child.to_html())
-
     def test_paragraphs(self):
         md = """
     This is *bolded* paragraph
@@ -402,3 +397,15 @@ This is the same paragraph on a new line
             html,
             "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
     )
+
+    def test_heading(self):
+        md = "## This is a heading"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, "<div><h2>This is a heading</h2></div>")
+
+    def test_quote(self):
+        md = "> This is a quote\n> with multiple lines"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, "<div><blockquote>This is a quote with multiple lines</blockquote></div>")
