@@ -145,7 +145,11 @@ def markdown_to_html_node(markdown):
             stripped_quote_lines = [quote_line[1:].strip() for quote_line in quote_lines]
             quote_text = " ".join(stripped_quote_lines)
             children = text_to_children(quote_text)
-            html_nodes.append(ParentNode("blockquote", children))                
+            html_nodes.append(ParentNode("blockquote", children))        
+        if block_type == BlockType.code:
+            code_parts = block.split("```")
+            stripped_code_parts = code_parts[1].lstrip("\n")
+            print(stripped_code_parts)
 
 
     return ParentNode("div", html_nodes)
