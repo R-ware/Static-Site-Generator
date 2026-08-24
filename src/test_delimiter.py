@@ -412,11 +412,11 @@ This is the same paragraph on a new line
 
     def test_codeblock(self):
         md = """
-        ```
-        This is text that _should_ remain
-        the **same** even with inline stuff
-        ```
-        """
+```
+This is text that _should_ remain
+the **same** even with inline stuff
+```
+"""
 
         node = markdown_to_html_node(md)
         html = node.to_html()
@@ -424,3 +424,15 @@ This is the same paragraph on a new line
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
     )
+
+    def test_unordered_list(self):
+        md = "- item one\n- item two"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, "<div><ul><li>item one</li><li>item two</li></ul></div>")
+
+    def test_ordered_list(self):
+        md = "1. item one\n2. item two"
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(html, "<div><ol><li>item one</li><li>item two</li></ol></div>")

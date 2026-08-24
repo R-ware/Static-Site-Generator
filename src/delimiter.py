@@ -149,7 +149,18 @@ def markdown_to_html_node(markdown):
         if block_type == BlockType.code:
             code_parts = block.split("```")
             stripped_code_parts = code_parts[1].lstrip("\n")
-            print(stripped_code_parts)
-
-
+            code_node = TextNode(stripped_code_parts, TextType.code_inline)
+            html_node = text_node_to_html_node(code_node)
+            children = [html_node]
+            html_nodes.append(ParentNode("pre", children))
+        if block_type == BlockType.unordered_list:
+            lines = block.split("\n")
+            stripped_lines = [line[2:].strip() for line in lines]
+            unordered_text = [ParentNode("li", text_to_children(line)) for line in stripped_lines]
+            html_nodes.append(ParentNode("ul", unordered_text))
+        if block_type == BlockType.ordered_list:
+            lines = block.split("\n")
+            stripped_lines = [line.split(".", 1)[1].strip() for line in lines]
+            ordered_text = [ParentNode("li", text_to_children(line)) for line in stripped_lines]
+            html_nodes.append(ParentNode("ol", ordered_text))
     return ParentNode("div", html_nodes)
