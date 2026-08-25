@@ -1,8 +1,8 @@
 from textnode import *
+from source_copy import source_copy
 
 def main():
-    test_node = TextNode("this is a test", TextType.text_inline, "http://example.com")
-    print(test_node)
+    source_copy("static/", "public/")
 
 if __name__ == "__main__":
     main()
