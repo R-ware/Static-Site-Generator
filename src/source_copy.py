@@ -16,3 +16,5 @@ def source_copy(static, public):
             shutil.copy(static_path, public_path)
         else:
             source_copy(static_path, public_path)
+
+def extract_title(markdown):
