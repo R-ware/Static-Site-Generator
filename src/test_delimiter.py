@@ -5,8 +5,8 @@ from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestSplitNodesDelimiter(unittest.TestCase):
     def test_split_nodes_delimiter_bold1(self):
-        node = TextNode("This is some text with *bold* and _italic_ formatting", TextType.text_inline)
-        new_nodes = split_nodes_delimiter([node], "*", TextType.bold_inline)
+        node = TextNode("This is some text with **bold** and _italic_ formatting", TextType.text_inline)
+        new_nodes = split_nodes_delimiter([node], "**", TextType.bold_inline)
         self.assertListEqual(
             new_nodes,
             [
@@ -310,7 +310,7 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         )
 
     def test_text_to_textnodes(self):
-        text = "This is *bold*, _italic_, `code`, ![image](https://i.imgur.com/zjjcJKZ.png), and [link](https://www.example.com)."
+        text = "This is **bold**, _italic_, `code`, ![image](https://i.imgur.com/zjjcJKZ.png), and [link](https://www.example.com)."
         nodes = text_to_textnodes(text)
         self.assertListEqual(
             nodes,
@@ -340,7 +340,7 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         )
 
     def test_text_to_textnodes_multiple_same_formatting(self):
-        text = "This is *bold* and *another bold* text."
+        text = "This is **bold** and **another bold** text."
         nodes = text_to_textnodes(text)
         self.assertListEqual(
             nodes,
@@ -383,7 +383,7 @@ This is the same paragraph on a new line
 
     def test_paragraphs(self):
         md = """
-    This is *bolded* paragraph
+    This is **bolded** paragraph
     text in a p
     tag here
 
@@ -436,3 +436,13 @@ the **same** even with inline stuff
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(html, "<div><ol><li>item one</li><li>item two</li></ol></div>")
+
+    def test_markdown(self):
+        test_md = "Here's what `elflang` looks like (the perfect coding language):"
+        node = markdown_to_html_node(test_md)
+        print(node.to_html())
+
+    def test_img(self):
+        md = "![JRR Tolkien sitting](/images/tolkien.png)"
+        node = markdown_to_html_node(md)
+        print(node.to_html())
