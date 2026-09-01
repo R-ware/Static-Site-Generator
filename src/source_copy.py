@@ -2,6 +2,7 @@ import os
 import shutil
 from delimiter import markdown_to_html_node
 from htmlnode import HTMLNode, LeafNode
+from pathlib import Path
 
 def source_copy(static, public):
     if os.path.exists(static) == False:
@@ -47,3 +48,14 @@ def generate_page(from_path, template_path, dest_path):
             os.makedirs(path)
     with open(dest_path, mode="w") as f:
         f.write(content_template)
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    content_dir = os.listdir(dir_path_content)
+    for file in content_dir:
+        content_path = os.path.join(dir_path_content, file)
+        dest_path = os.path.join(dest_dir_path, file)
+        if os.path.isfile(content_path):
+            dest_path = Path(dest_path).with_suffix(".html")
+            generate_page(content_path, template_path, dest_path)
+        else:
+            generate_pages_recursive(content_path, template_path, dest_path)
